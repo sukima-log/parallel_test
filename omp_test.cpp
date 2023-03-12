@@ -14,20 +14,20 @@
 /* 関数切り替え */
 // #define PARALLEL_ROW
 // #define PARALLEL_COL
-#define SERIAL_CASH // キャッシュ考慮
 #define SERIAL
+#define SERIAL_CASH // キャッシュ考慮
 
-/* 行列サイズ(条件：正方行列) */
+/* 行列サイズ */
 #ifdef DEBUG
 #define ROW_A 2
 #define COL_A 2
 #define ROW_B COL_A
 #define COL_B 2
 #else
-#define ROW_A 5000
-#define COL_A 5000  
+#define ROW_A 1000
+#define COL_A 1000  
 #define ROW_B COL_A
-#define COL_B 5000
+#define COL_B 1000
 #endif
 
 // 実行回数
@@ -68,6 +68,12 @@ void func_print() {
     printf("GEMM(serial_cash)\n");
     #else
     printf("GEMM(serial)\n");
+    #endif
+    #ifdef PARALLEL_ROW
+    printf("GEMM_行並列\n");
+    #endif
+    #ifdef PARALLEL_COL
+    printf("GEMM_列並列\n");
     #endif
     printf("行列サイズ(ROW_A) : %u\n", ROW_A);
     printf("試行回数 : %u\n", TRY);
@@ -130,10 +136,10 @@ int main (void) {
                 c[i][j] = 0;
             }
         }
-        /* 行列積演算 GEMM(General Matrix Multiply)*/
+        /* 行列-行列乗算 GEMM(General Matrix Multiply)*/
         start = std::chrono::system_clock::now();   // 計測開始時間
-        // シリアル
         #ifdef SERIAL
+        // 行列行列積(GEMM)_シリアル
         gemm(a, b, c);
         #endif
         #ifdef PARALLEL_ROW
