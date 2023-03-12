@@ -1,21 +1,22 @@
 /*****************************/
 /* 行列積 */
 /*****************************/
-#include<iostream>
-#include<stdio.h>
-#include<math.h>
-#include<random>
-#include<chrono>
+#include <iostream>
+#include <stdio.h>
+#include <math.h>
+#include <random>
+#include <chrono>
 #include <assert.h>
+#include <omp.h>
 
 /* デバッグ用 */
 // #define DEBUG
 
 /* 関数切り替え */
-// #define PARALLEL_ROW
+#define PARALLEL_ROW
 // #define PARALLEL_COL
-#define SERIAL
-#define SERIAL_CASH // キャッシュ考慮
+// #define SERIAL
+// #define SERIAL_CASH // キャッシュ考慮
 
 /* 行列サイズ */
 #ifdef DEBUG
@@ -24,15 +25,16 @@
 #define ROW_B COL_A
 #define COL_B 2
 #else
-#define ROW_A 1000
-#define COL_A 1000  
+#define ROW_A 5000
+#define COL_A 5000  
 #define ROW_B COL_A
-#define COL_B 1000
+#define COL_B 5000
 #endif
 
 // 実行回数
 #define TRY 1
 
+#ifdef SERIAL
 /* 行列行列積(GEMM) */
 inline void gemm (int** a, int** b, long** c) {
 #ifdef SERIAL_CASH
@@ -53,9 +55,21 @@ inline void gemm (int** a, int** b, long** c) {
     }
 #endif
 }
+#endif
 
 #ifdef PARALLEL_ROW
 /* 行列行列積(GEMM)_OpenMP_ROW */
+inline void gemm (int** a, int** b, long** c) {
+    size_t i, j, k;
+    #pragma omp parallel for private(j, k)
+    for(i=0; i<ROW_A; i++) {
+        for(j=0; j<ROW_B; j++) {
+            for(k=0; k<COL_B; k++) {
+                c[i][k] += (long)a[i][j] * (long)b[j][k];
+            }
+        }
+    }
+}
 #endif
 
 #ifdef PARALLEL_COL
@@ -64,10 +78,12 @@ inline void gemm (int** a, int** b, long** c) {
 
 
 void func_print() {
+    #ifdef SERIAL
     #ifdef SERIAL_CASH
     printf("GEMM(serial_cash)\n");
     #else
     printf("GEMM(serial)\n");
+    #endif
     #endif
     #ifdef PARALLEL_ROW
     printf("GEMM_行並列\n");
@@ -77,6 +93,9 @@ void func_print() {
     #endif
     printf("行列サイズ(ROW_A) : %u\n", ROW_A);
     printf("試行回数 : %u\n", TRY);
+    printf("最大スレッド数 : %d\n", omp_get_max_threads());
+    omp_set_num_threads(8);
+    printf("最大スレッド数 : %d\n", omp_get_max_threads());
     #ifdef DEBUG
     printf("rand()MAX : %u\n", RAND_MAX);
     printf("sizeof(int) : %lu\n", sizeof(int));
@@ -138,16 +157,8 @@ int main (void) {
         }
         /* 行列-行列乗算 GEMM(General Matrix Multiply)*/
         start = std::chrono::system_clock::now();   // 計測開始時間
-        #ifdef SERIAL
         // 行列行列積(GEMM)_シリアル
         gemm(a, b, c);
-        #endif
-        #ifdef PARALLEL_ROW
-        // 行列行列積(GEMM)_OpenMP_ROW
-        #endif
-        #ifdef PARALLEL_COL
-        // 行列行列積(GEMM)_OpenMP_COL
-        #endif
         end = std::chrono::system_clock::now();     // 計測終了時間
         time += (std::chrono::duration_cast<std::chrono::nanoseconds>(end-start).count());
     }
