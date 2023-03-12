@@ -25,14 +25,15 @@
 #define ROW_B COL_A
 #define COL_B 2
 #else
-#define ROW_A 5000
-#define COL_A 5000  
+#define ROW_A 500
+#define COL_A 500  
 #define ROW_B COL_A
-#define COL_B 5000
+#define COL_B 500
 #endif
 
-// 実行回数
+// 実行回数 & スレッド数
 #define TRY 1
+#define THREADS 8
 
 #ifdef SERIAL
 /* 行列行列積(GEMM) */
@@ -94,7 +95,9 @@ void func_print() {
     printf("行列サイズ(ROW_A) : %u\n", ROW_A);
     printf("試行回数 : %u\n", TRY);
     printf("最大スレッド数 : %d\n", omp_get_max_threads());
-    omp_set_num_threads(8);
+    int thread_num = THREADS;    // スレッド数指定
+    assert(thread_num <= omp_get_max_threads());
+    omp_set_num_threads(thread_num);
     printf("最大スレッド数 : %d\n", omp_get_max_threads());
     #ifdef DEBUG
     printf("rand()MAX : %u\n", RAND_MAX);
