@@ -13,7 +13,7 @@
 // #define DEBUG
 
 /* 関数切り替え */
-#define PARALLEL_ROW
+#define PARALLEL
 // #define SERIAL
 // #define SERIAL_CASH // キャッシュ考慮
 
@@ -57,7 +57,7 @@ inline void gemm (int** a, int** b, long** c) {
 }
 #endif
 
-#ifdef PARALLEL_ROW
+#ifdef PARALLEL
 /* 行列行列積(GEMM)_OpenMP_ROW */
 inline void gemm (int** a, int** b, long** c) {
     size_t i, j, k;
@@ -81,7 +81,7 @@ void func_print() {
     printf("GEMM(serial)\n");
     #endif
     #endif
-    #ifdef PARALLEL_ROW
+    #ifdef PARALLEL
     printf("GEMM_並列\n");
     #endif
     printf("行列サイズ(ROW_A) : %u\n", ROW_A);
@@ -90,7 +90,7 @@ void func_print() {
     int thread_num = THREADS;    // スレッド数指定
     assert(thread_num <= omp_get_max_threads());
     omp_set_num_threads(thread_num);
-    printf("最大スレッド数 : %d\n", omp_get_max_threads());
+    printf("使用スレッド数 : %d\n", omp_get_max_threads());
     #ifdef DEBUG
     printf("rand()MAX : %u\n", RAND_MAX);
     printf("sizeof(int) : %lu\n", sizeof(int));
