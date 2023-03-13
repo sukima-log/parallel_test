@@ -82,13 +82,15 @@ void func_print() {
     #endif
     #endif
     #ifdef PARALLEL
-    printf("GEMM_並列\n");
+    printf("GEMM(parallel)\n");
     #endif
     printf("行列サイズ(ROW_A) : %u\n", ROW_A);
     printf("試行回数 : %u\n", TRY);
     printf("最大スレッド数 : %d\n", omp_get_max_threads());
     int thread_num = THREADS;    // スレッド数指定
-    assert(thread_num <= omp_get_max_threads());
+    if(thread_num > omp_get_max_threads()) {
+        thread_num = omp_get_max_threads();
+    }
     omp_set_num_threads(thread_num);
     printf("使用スレッド数 : %d\n", omp_get_max_threads());
     #ifdef DEBUG
