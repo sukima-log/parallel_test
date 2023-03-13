@@ -14,7 +14,6 @@
 
 /* 関数切り替え */
 #define PARALLEL_ROW
-// #define PARALLEL_COL
 // #define SERIAL
 // #define SERIAL_CASH // キャッシュ考慮
 
@@ -73,10 +72,6 @@ inline void gemm (int** a, int** b, long** c) {
 }
 #endif
 
-#ifdef PARALLEL_COL
-/* 行列行列積(GEMM)_OpenMP_COL */
-#endif
-
 
 void func_print() {
     #ifdef SERIAL
@@ -87,10 +82,7 @@ void func_print() {
     #endif
     #endif
     #ifdef PARALLEL_ROW
-    printf("GEMM_行並列\n");
-    #endif
-    #ifdef PARALLEL_COL
-    printf("GEMM_列並列\n");
+    printf("GEMM_並列\n");
     #endif
     printf("行列サイズ(ROW_A) : %u\n", ROW_A);
     printf("試行回数 : %u\n", TRY);
