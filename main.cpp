@@ -58,7 +58,7 @@ inline void gemm (int** a, int** b, long** c) {
 #endif
 
 #ifdef PARALLEL
-/* 行列行列積(GEMM)_OpenMP_ROW */
+/* 行列行列積(GEMM)_OpenMP */
 inline void gemm (int** a, int** b, long** c) {
     size_t i, j, k;
     #pragma omp parallel for private(j, k)
