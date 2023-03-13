@@ -24,10 +24,10 @@
 #define ROW_B COL_A
 #define COL_B 2
 #else
-#define ROW_A 500
-#define COL_A 500  
+#define ROW_A 5000
+#define COL_A 5000  
 #define ROW_B COL_A
-#define COL_B 500
+#define COL_B 5000
 #endif
 
 // 実行回数 & スレッド数
@@ -152,7 +152,6 @@ int main (void) {
         }
         /* 行列-行列乗算 GEMM(General Matrix Multiply)*/
         start = std::chrono::system_clock::now();   // 計測開始時間
-        // 行列行列積(GEMM)_シリアル
         gemm(a, b, c);
         end = std::chrono::system_clock::now();     // 計測終了時間
         time += (std::chrono::duration_cast<std::chrono::nanoseconds>(end-start).count());
