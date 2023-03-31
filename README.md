@@ -6,12 +6,12 @@
 ## コード切り替えのための定義（#define）
 1. PARALLEL
     * OpenMPを用いた並列実装へ切り替え
-    * SERIALとは共存不可
+    * SERIALとは<font color="red">共存不可</font>
     * キャッシュを意識したコード
 2. SERIAL
-    * 1スレッドを用いた"未"並列処理
-    * PARALLELとは共存不可
-    * SERIAL_CASHとは共存可能で単体だとキャッシュを意識しないコード
+    * 1スレッドを用いた逐次処理
+    * PARALLELとは<font color="red">共存不可</font>
+    * SERIAL_CASHとは共存可能でSERIAL単体だとキャッシュを意識しないコード
 3. SERIAL_CASH
     * 未並列処理をキャッシュを意識した処理に切り替える定義
     * SERIALと同時に有効にすることでキャッシュを意識したコードへ切り替え
