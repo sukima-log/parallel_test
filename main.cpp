@@ -24,10 +24,10 @@
 #define ROW_B COL_A
 #define COL_B 2
 #else
-#define ROW_A 5000
-#define COL_A 5000  
+#define ROW_A 1000
+#define COL_A 1000  
 #define ROW_B COL_A
-#define COL_B 5000
+#define COL_B 1000
 #endif
 
 // 実行回数 & スレッド数
