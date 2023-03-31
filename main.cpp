@@ -31,7 +31,7 @@
 #endif
 
 // 実行回数 & スレッド数
-#define TRY 1
+#define TRY 3
 #define THREADS 8
 
 #ifdef SERIAL
