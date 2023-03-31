@@ -6,11 +6,11 @@
 ## コード切り替えのための定義（#define）
 1. PARALLEL
     * OpenMPを用いた並列実装へ切り替え
-    * SERIALとは<span style="color=Red">共存不可</span>
+    * SERIALとは<span style="color: red">共存不可</span>
     * キャッシュを意識したコード
 2. SERIAL
     * 1スレッドを用いた逐次処理
-    * PARALLELとは<span style="color=Red">共存不可</span>
+    * PARALLELとは<span style="color: red">共存不可</span>
     * SERIAL_CASHとは共存可能でSERIAL単体だとキャッシュを意識しないコード
 3. SERIAL_CASH
     * 未並列処理をキャッシュを意識した処理に切り替える定義
@@ -33,6 +33,6 @@
 2. ディレクトリに「main」ができるのでコマンド`main`で処理を実行
 
 <br>
-<span style="color=#00000a">行列サイズを変更してもう一度実行する時</span><br>
+<span style="color: #00000a">行列サイズを変更してもう一度実行する時</span><br>
 
 `make clean`コマンドで実行ファイル等を削除可能
