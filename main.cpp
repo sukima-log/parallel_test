@@ -181,7 +181,7 @@ int main (void) {
 
     /* 結果表示 */
     printf("GEMM実行時間 : %lf ns\n", (double)time/TRY);
-    printf("GEMM実行時間 : %lf ms\n", (double)((double)time/TRY)/1000000);
+    printf("GEMM実行時間 : %lf ms\n", (double)((double)time/TRY)/pow(10, 6));
 
     /* メモリ解放 */
     for(size_t i=0; i<ROW_A; i++) {
